@@ -1,0 +1,528 @@
+{% extends 'base.html' %} {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  .card-list {
+	@include clear();
+	width: 100%;
+}
+
+.card {
+	border-radius: 8px;
+	color: white;
+	padding: 10px;
+	position: relative;
+
+	.zmdi {
+		color: white;
+		font-size: 28px;
+		opacity: 0.3;
+		position: absolute;
+		right: 13px;
+		top: 13px;
+	}
+	
+	.stat {
+		border-top: 1px solid rgba(255, 255, 255, 0.3);
+		font-size: 8px;
+		margin-top: 25px;
+		padding: 10px 10px 0;
+		text-transform: uppercase;
+	}
+	
+	.title {
+		display: inline-block;
+		font-size: 8px;
+		padding: 10px 10px 0;
+		text-transform: uppercase;
+	}
+	
+	.value {
+		font-size: 28px;
+		padding: 0 10px;
+	}
+	
+	&.blue {
+		background-color: #2298F1;
+	}
+	
+	&.green {
+		background-color: #66B92E;
+	}
+	
+	&.orange {
+		background-color: #DA932C;
+	}
+	
+	&.red {
+		background-color: #D65B4A;
+	}
+}
+
+.projects {
+	background-color: $dark-text;
+	border: 1px solid $light-bg;
+	overflow-x: auto;
+	width: 100%;
+	
+	&-inner {
+		border-radius: 4px;
+	}
+}
+
+.projects-header {
+	color: white;
+	padding: 22px;
+
+	.count,
+	.title {
+		display: inline-block;
+	}
+	
+	.count {
+		color: #738297;
+	}
+	
+	.zmdi {
+		cursor: pointer;
+		float: right;
+		font-size: 16px;
+		margin: 5px 0;
+	}
+	
+	.title {
+		font-size: 21px;
+		
+		+ .count {
+			margin-left: 5px;
+		}
+	}
+}
+
+.chart-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .chart-box {
+            width: 45%;
+            margin: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        canvas {
+            border-radius: 8px;
+        }
+
+
+.panel-wrapper .panel-head {
+	background-color: #00A5F2;
+	color: #fff;
+	padding: 10px 10px;
+	border: 1px solid #00A5F2;
+}
+.panel-wrapper .panel-body {
+	padding: 20px 10px;
+	font-size: 80%;
+}
+
+</style>
+
+
+<div class="container-fluid">
+  {% comment %}
+  <div class="row">
+    <div class="col-sm-6 col-xl-3">
+      <div class="card overflow-hidden rounded-2">
+        <div class="position-relative">
+          <a href="javascript:void(0)"
+            ><img
+              src="../assets/images/products/s4.jpg"
+              class="card-img-top rounded-0"
+              alt="..."
+          /></a>
+          <a
+            href="javascript:void(0)"
+            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Add To Cart"
+            ><i class="ti ti-basket fs-4"></i
+          ></a>
+        </div>
+        <div class="card-body pt-3 p-4">
+          <h6 class="fw-semibold fs-4">Boat Headphone</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="fw-semibold fs-4 mb-0">
+              $50
+              <span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span>
+            </h6>
+            <ul class="list-unstyled d-flex align-items-center mb-0">
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card overflow-hidden rounded-2">
+        <div class="position-relative">
+          <a href="javascript:void(0)"
+            ><img
+              src="../assets/images/products/s5.jpg"
+              class="card-img-top rounded-0"
+              alt="..."
+          /></a>
+          <a
+            href="javascript:void(0)"
+            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Add To Cart"
+            ><i class="ti ti-basket fs-4"></i
+          ></a>
+        </div>
+        <div class="card-body pt-3 p-4">
+          <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="fw-semibold fs-4 mb-0">
+              $650
+              <span class="ms-2 fw-normal text-muted fs-3"
+                ><del>$900</del></span
+              >
+            </h6>
+            <ul class="list-unstyled d-flex align-items-center mb-0">
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card overflow-hidden rounded-2">
+        <div class="position-relative">
+          <a href="javascript:void(0)"
+            ><img
+              src="../assets/images/products/s7.jpg"
+              class="card-img-top rounded-0"
+              alt="..."
+          /></a>
+          <a
+            href="javascript:void(0)"
+            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Add To Cart"
+            ><i class="ti ti-basket fs-4"></i
+          ></a>
+        </div>
+        <div class="card-body pt-3 p-4">
+          <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="fw-semibold fs-4 mb-0">
+              $150
+              <span class="ms-2 fw-normal text-muted fs-3"
+                ><del>$200</del></span
+              >
+            </h6>
+            <ul class="list-unstyled d-flex align-items-center mb-0">
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card overflow-hidden rounded-2">
+        <div class="position-relative">
+          <a href="javascript:void(0)"
+            ><img
+              src="../assets/images/products/s11.jpg"
+              class="card-img-top rounded-0"
+              alt="..."
+          /></a>
+          <a
+            href="javascript:void(0)"
+            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Add To Cart"
+            ><i class="ti ti-basket fs-4"></i
+          ></a>
+        </div>
+        <div class="card-body pt-3 p-4">
+          <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="fw-semibold fs-4 mb-0">
+              $285
+              <span class="ms-2 fw-normal text-muted fs-3"
+                ><del>$345</del></span
+              >
+            </h6>
+            <ul class="list-unstyled d-flex align-items-center mb-0">
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="me-1" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+              <li>
+                <a class="" href="javascript:void(0)"
+                  ><i class="ti ti-star text-warning"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endcomment %}
+
+  <div class="card-list">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card blue">
+          <div class="title">Total Patient</div>
+          <i class="zmdi zmdi-upload"></i>
+          <div class="value">{{total_pat}}</div>
+          <!-- <div class="stat"><b>13</b>% increase</div> -->
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card green">
+          <div class="title">Open Appointments</div>
+          <i class="zmdi zmdi-upload"></i>
+          <div class="value">{{open_app}}</div>
+          <!-- <div class="stat"><b>4</b>% increase</div> -->
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card orange">
+          <div class="title">Today's Patient Count</div>
+          <i class="zmdi zmdi-download"></i>
+          <div class="value">{{today_appointments}}</div>
+          <!-- <div class="stat"><b>13</b>% decrease</div> -->
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        <div class="card red">
+          <div class="title">Closed Appointments</div>
+          <i class="zmdi zmdi-download"></i>
+          <div class="value">{{close_app}}</div>
+          <!-- <div class="stat"><b>13</b>% decrease</div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 d-flex align-items-strech">
+      <div class="card w-100">
+        <div class="card-body">
+          <div
+            class="d-sm-flex d-block align-items-center justify-content-between mb-9"
+          >
+            <div class="mb-3 mb-sm-0">
+              <h5 class="card-title fw-semibold">Patient Graph By Gender</h5>
+            </div>
+
+          </div>
+          <!-- <div id="chart"></div> -->
+          <canvas id="patientChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 d-flex align-items-strech">
+      <div class="card w-100">
+        <div class="card-body">
+          <div
+            class="d-sm-flex d-block align-items-center justify-content-between mb-9"
+          >
+            <div class="mb-3 mb-sm-0">
+              <h5 class="card-title fw-semibold">Patient Graph By Count</h5>
+            </div>
+
+          </div>
+          <!-- <div id="chart"></div> -->
+          <canvas id="dailyChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="panel-wrapper">
+      <div class="panel-head">
+        Latest Medical Insights and Updates
+      </div>
+      <div class="panel-body">
+        Explore new treatments, research findings, and health tips directly from our curated news feed.
+      </div>
+    </div>
+    <!-- <div class="col-lg-4">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card overflow-hidden">
+            <div class="card-body p-4">
+              <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h4 class="fw-semibold mb-3">$36,358</h4>
+                  <div class="d-flex align-items-center mb-3">
+                    <span
+                      class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center"
+                    >
+                      <i class="ti ti-arrow-up-left text-success"></i>
+                    </span>
+                    <p class="text-dark me-1 fs-3 mb-0">+9%</p>
+                    <p class="fs-3 mb-0">last year</p>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="me-4">
+                      <span
+                        class="round-8 bg-primary rounded-circle me-2 d-inline-block"
+                      ></span>
+                      <span class="fs-2">2023</span>
+                    </div>
+                    <div>
+                      <span
+                        class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"
+                      ></span>
+                      <span class="fs-2">2023</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-center">
+                    <div id="breakup"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row alig n-items-start">
+                <div class="col-8">
+                  <h5 class="card-title mb-9 fw-semibold">Monthly Earnings</h5>
+                  <h4 class="fw-semibold mb-3">$6,820</h4>
+                  <div class="d-flex align-items-center pb-1">
+                    <span
+                      class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center"
+                    >
+                      <i class="ti ti-arrow-down-right text-danger"></i>
+                    </span>
+                    <p class="text-dark me-1 fs-3 mb-0">+9%</p>
+                    <p class="fs-3 mb-0">last year</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-end">
+                    <div
+                      class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center"
+                    >
+                      <i class="ti ti-currency-dollar fs-6"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="earning"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+</div>
+
+{% endblock %}
